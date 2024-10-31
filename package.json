@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@types/selenium-webdriver": "^4.1.26",
+    "jimp": "^1.6.0",
     "mocha": "^10.7.3",
     "selenium-webdriver": "^4.25.0"
   }

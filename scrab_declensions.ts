@@ -8,9 +8,8 @@ export const prepareDriver = async () => {
 
 
 const run = async () => {
-  await declension.scrabHtmls();
-  // const driver = await prepareDriver();
-  
+  const driver = await prepareDriver();
+  await declension.scrabHtmls(driver);
 };
 
 run();

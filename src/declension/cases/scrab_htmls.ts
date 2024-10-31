@@ -3,9 +3,12 @@ import { By, WebDriver, WebElement } from "selenium-webdriver";
 import { element, elements } from '../../utils/webdriver';
 import { anyRow, controlButtons, dictionaryLabel } from '../../seedlang/pages/dictionary';
 import { confirmSignIn, emailInput, passwordInput, signInButton } from '../../seedlang/pages/land';
-import { getPage } from '../navigation/word_page';
-import { getSeedlangVerbsWithFrequenciesPath } from '../../utils/paths';
+import { getUsagesPage, getWordPage } from '../navigation/word_page';
+import { getDeclensionsVerbsWithFrequenciesPath, getSeedlangVerbsWithFrequenciesPath } from '../../utils/paths';
+import { Jimp } from 'jimp';
 
+
+const mainContentClass = ".rAbschnitt";
 
 const elementsToWait = [
 
@@ -16,13 +19,48 @@ const getVerbsWithFrequencies = () => {
   return JSON.parse(fileContent.toString('utf-8'));
 }
 
-export const scrabHtmls = async () => {
+const saveVerbsToFile = (verbs: any[]) => {
+  fs.writeFileSync(getDeclensionsVerbsWithFrequenciesPath(), JSON.stringify(verbs));
+}
+
+export const scrabHtmls = async (driver: WebDriver) => {
   const verbs = getVerbsWithFrequencies();
-  console.log(verbs.length);
+  
+
+  for (let i = 0; i < 1; i++) {
+    const screenshotName = await takeScreenshot(driver, verbs[i].word);
+    verbs[i].scrPath = screenshotName;
+  }
+  saveVerbsToFile(verbs);
+
+  //
+
+
+
+      
 
   // await driver.get("https://www.seedlang.com/");
 };
 
+
+
+
+const takeScreenshot = async (driver: WebDriver, word: string): Promise<string> => {
+  
+      await driver.get(getUsagesPage(word));
+      let element = await driver.findElement(By.css(mainContentClass));
+      const rect = await element.getRect();
+      let image = await driver.takeScreenshot();
+      let screenshot = await Jimp.read(Buffer.from(image, 'base64'));
+  
+      const scrPath = `${word}.png`;
+      console.log(rect);
+      // screenshot
+      //   .crop({x: Math.max(rect.x, 0), y: Math.max(rect.y, 0), w: rect.width, h: rect.height});
+      screenshot.write(`${word}.${'png'}`);
+  
+      return scrPath
+}
 // const waitUntilRowsAreReady = async (driver: WebDriver) => {
 //   await driver.wait(element(driver, dictionaryLabel), 10000);
 //   await driver.wait(element(driver, anyRow), 10000);

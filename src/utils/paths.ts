@@ -6,3 +6,7 @@ export const getSeedlangVerbsWithFrequenciesPath = () => {
   return 'res/seedlang/verbs-with-frequency.json';
 }
 
+export const getDeclensionsVerbsWithFrequenciesPath = () => {
+  return 'res/declension/verbs.json';
+}
+
