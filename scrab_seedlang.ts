@@ -9,7 +9,7 @@ export const prepareDriver = async () => {
 
 const run = async () => {
   const driver = await prepareDriver();
-  await seedlang.login(driver);
+  await seedlang.fetchHtmls(driver);
 };
 
 run();

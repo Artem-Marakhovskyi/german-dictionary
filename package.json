@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc-watch --onSuccess \"echo Alles gut, compilation is done successfully\"",
     "scrab_seedlang": "node ./dist/scrab_seedlang.js",
-    "parse_seedlang": "node ./dist/parse_seedlang.js"
+    "parse_seedlang": "node ./dist/parse_seedlang.js",
+    "scrab_declensions": "node ./dist/scrab_declensions.js"
   },
   "author": "",
   "license": "ISC",

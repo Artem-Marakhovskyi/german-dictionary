@@ -1,6 +1,7 @@
 import * as fs from 'node:fs';
 
 import * as cheerio from 'cheerio';
+import { getSeedlangHtmlPath, getSeedlangVerbsWithFrequenciesPath } from '../../utils/paths';
 
 const wordClass = ".css-160fpri";
 const frequencyBlockClass = ".css-x2i6jg";
@@ -9,7 +10,7 @@ const frequent = 'css-9uri6i';
 type WordFreq = {word: String; frequency: number};
 
 const parsePage = (idx): WordFreq[] => {
-  const htmlBuffer = fs.readFileSync(`htmls/page_${idx}.html`);
+  const htmlBuffer = fs.readFileSync(getSeedlangHtmlPath(idx));
   const $ = cheerio.load(htmlBuffer);  
   
   let words = [];
@@ -35,11 +36,12 @@ const parsePage = (idx): WordFreq[] => {
   });
 };
 
-export const getVerbs = async () => {
+export const parseHtmls = async () => {
   let pageResults = [];
   for (let i = 0; i <= 179; i++) {
     pageResults = pageResults.concat(parsePage(i));
   }  
-  fs.writeFileSync('htmls/result/res.json', JSON.stringify(pageResults));
+  pageResults = pageResults.map((x, idx) => ({...x, idx }));
+  fs.writeFileSync(getSeedlangVerbsWithFrequenciesPath(), JSON.stringify(pageResults));
   
 };
